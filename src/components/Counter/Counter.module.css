@@ -1,0 +1,26 @@
+.Counter{
+    width: 20%;
+    height: 40%;
+    border-radius: 50%;
+    position: relative;
+    border: 1px solid black;
+}
+
+.CounterControl{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.CounterControlBtn {
+    padding: 10px;
+}
+
+.max{
+    color: red;
+}
+
+.min{
+    color: yellow;
+}
