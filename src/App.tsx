@@ -36,7 +36,7 @@ function App() {
 
     const onSetMinValue = (e: ChangeEvent<HTMLInputElement>) => {
         setMinValue(+e.currentTarget.value)
-        if(minValue === maxValue || maxValue <= minValue){
+        if(minValue === maxValue || maxValue >= minValue || maxValue <= minValue){
             dispatch(setDisableAC(true,true,true))
         }else {
             dispatch(setDisableAC(false,false,false))
@@ -45,7 +45,7 @@ function App() {
 
     const onSetMaxValue = (e: ChangeEvent<HTMLInputElement>) => {
         setMaxValue(+e.currentTarget.value)
-        if(minValue ===  maxValue || maxValue <= minValue){
+        if(minValue ===  maxValue || maxValue <= minValue || maxValue >= minValue){
             dispatch(setDisableAC(true,true,true))
         }else {
             dispatch(setDisableAC(false,false,false))
