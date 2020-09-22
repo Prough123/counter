@@ -8,7 +8,7 @@ import {
     disableType,
     incValueAC,
     initialStateType,
-    setDisableAC,
+    setDisableAC, setErrorMessage,
     setValueAC,
 } from "./state/counter-reducer";
 import {AppRootStateType} from "./state/redux-store";
@@ -19,10 +19,14 @@ function App() {
     // Если Старт и Макс равны или Макс меньше Старт все кнопки задизейблены и сообщение об ошибке,
     //подсветка инпутов во время ошибки
     // После нажатия Set она дизейблится до начала ввода нового значение
+    // Сделать переключатель на ошибку , если ошибка то вывыести сообщение об ошибке , если ошибки нету то вывыести пожалуйста введите значение
+    // а если есть значение то показать значение
 
     const state = useSelector<AppRootStateType, initialStateType>(state => state.counter)
     const disableBtn = useSelector<AppRootStateType, disableType>(state => state.counter.disable)
+    const disabledSetValue = disableBtn.disabledSetValue
     const currentValue = state.currentValue
+    const valueError = state.error
     const dispatch = useDispatch()
 
 
@@ -36,18 +40,24 @@ function App() {
 
     const onSetMinValue = (e: ChangeEvent<HTMLInputElement>) => {
         setMinValue(+e.currentTarget.value)
-        if(minValue === maxValue || maxValue >= minValue || maxValue <= minValue){
+        const start = +e.currentTarget.value
+        if(start >= maxValue || 0 > minValue ){
+            dispatch(setErrorMessage(true))
             dispatch(setDisableAC(true,true,true))
         }else {
+            dispatch(setErrorMessage(true))
             dispatch(setDisableAC(false,false,false))
         }
     }
 
     const onSetMaxValue = (e: ChangeEvent<HTMLInputElement>) => {
         setMaxValue(+e.currentTarget.value)
-        if(minValue ===  maxValue || maxValue <= minValue || maxValue >= minValue){
+        const max = +e.currentTarget.value
+        if(minValue  >=  max || 0 > maxValue ){
+            dispatch(setErrorMessage(true))
             dispatch(setDisableAC(true,true,true))
         }else {
+            dispatch(setErrorMessage(true))
             dispatch(setDisableAC(false,false,false))
         }
     }
@@ -56,6 +66,7 @@ function App() {
         dispatch(setValueAC(minValue, maxValue))
         setMaxValue(0)
         setMinValue(0)
+        dispatch(setErrorMessage(false))
     }
 
     const increaseValue = () => {
@@ -71,7 +82,7 @@ function App() {
         if(currentValue > state.minValue){
             dispatch(decValueAC())
         }
-        if((state.maxValue - 1) === currentValue){
+        if((state.minValue) === currentValue){
             dispatch(setDisableAC(false,false,true))
         }
     }
@@ -83,9 +94,9 @@ function App() {
     return (
         <div className="App">
             <div className="wrapper">
-                <Setup onChangeSetValue={onChangeSetValue} onSetMaxValue={onSetMaxValue} onSetMinValue={onSetMinValue}
+                <Setup disabledSetValue={disabledSetValue}onChangeSetValue={onChangeSetValue} onSetMaxValue={onSetMaxValue} onSetMinValue={onSetMinValue}
                        maxValue={maxValue} minValue={minValue} setValue={setValue}/>
-                <Output reset={resetValue} disableBtn={disableBtn} minValue={minValue} maxValue={maxValue}
+                <Output error={valueError}  reset={resetValue} disableBtn={disableBtn} minValue={minValue} maxValue={maxValue}
                         currentValue={currentValue} incValue={increaseValue}
                         decValue={decreaseValue}/>
             </div>

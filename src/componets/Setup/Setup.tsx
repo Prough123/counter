@@ -6,7 +6,7 @@ type SetValueType = {
     onSetMinValue: (e:ChangeEvent<HTMLInputElement>) => void
     onSetMaxValue: (e:ChangeEvent<HTMLInputElement>) => void
     onChangeSetValue: () => void
-
+    disabledSetValue:boolean
     minValue: number
     maxValue: number
 }
@@ -23,7 +23,7 @@ export const Setup = (props: SetValueType) => {
                 <span>Max</span>
                 <input type="number" value={props.maxValue} onChange={props.onSetMaxValue}/>
             </div>
-            <button onClick={props.onChangeSetValue}>Set Value</button>
+            <button disabled={props.disabledSetValue} onClick={props.onChangeSetValue}>Set Value</button>
         </div>
     )
 }

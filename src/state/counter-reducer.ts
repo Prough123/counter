@@ -1,20 +1,22 @@
 const INCREASE_VALUE = 'INCREASE_VALUE'
 const SET_VALUE = 'SET_VALUE'
 const DECREASE_VALUE = 'DECREASE_VALUE'
+const SET_DISABLE = 'SET_DISABLE'
 const SET_ERROR = 'SET_ERROR'
 const errorText = 'set value'
 
 export type disableType = typeof initialState.disable
 export type initialStateType = {
-    maxValue: number,
-    minValue: number,
-    error: boolean,
+    maxValue: number
+    minValue: number
+    error: boolean
     currentValue: number
     disable: {
         disabledSetValue: boolean
         disabledIncValue: boolean
         disabledDecValue: boolean
     }
+    setErrorMessage: string
 }
 
 
@@ -26,10 +28,12 @@ const initialState = {
         disabledIncValue: false,
         disabledDecValue: false,
     },
+    setErrorMessage: errorText,
+    error: true,
     currentValue: 0,
 } as initialStateType
 
-type ActionsType = incValueACType | decValueACType | setValueACType | setDisableACType
+type ActionsType = incValueACType | decValueACType | setValueACType | setDisableACType | setErrorACType
 
 
 export const counterReducer = (state: initialStateType = initialState, action: ActionsType): initialStateType => {
@@ -43,7 +47,7 @@ export const counterReducer = (state: initialStateType = initialState, action: A
         case 'DECREASE_VALUE': {
             return {...state, currentValue: state.currentValue - 1}
         }
-        case 'SET_ERROR': {
+        case 'SET_DISABLE': {
             return {
                 ...state, disable: {
                     disabledDecValue: action.disabledDecValue,
@@ -52,7 +56,9 @@ export const counterReducer = (state: initialStateType = initialState, action: A
                 }
             }
         }
-
+        case 'SET_ERROR': {
+            return {...state, setErrorMessage:state.setErrorMessage, error:action.error }
+        }
         default: {
             return state
         }
@@ -86,15 +92,21 @@ export type setValueACType = {
 export const setDisableAC = (disabledSetValue: boolean,
                              disabledIncValue: boolean,
                              disabledDecValue: boolean): setDisableACType => ({
-    type: 'SET_ERROR',
+    type: 'SET_DISABLE',
     disabledDecValue,
     disabledIncValue,
     disabledSetValue
 })
 export type setDisableACType = {
-    type: typeof SET_ERROR
+    type: typeof SET_DISABLE
     disabledSetValue: boolean
     disabledIncValue: boolean
     disabledDecValue: boolean
+}
+
+export const setErrorMessage = (error:boolean):setErrorACType => ({type: 'SET_ERROR', error})
+export type setErrorACType = {
+    type: typeof SET_ERROR
+    error: boolean
 }
 

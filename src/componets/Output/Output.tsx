@@ -13,13 +13,18 @@ type OutputType = {
         disabledDecValue: boolean
     }
     reset: () => void
+    error:boolean
 }
 
 export const Output = (props: OutputType) => {
 
     return (
         <div>
-            <span>{props.currentValue}</span>
+            {props.error ?
+                <span>set value pls</span>
+                :<span>{props.currentValue}</span>
+            }
+            {/*<span>{props.currentValue}</span>*/}
             <button disabled={props.disableBtn.disabledIncValue} onClick={props.incValue}>+</button>
             <button disabled={props.disableBtn.disabledDecValue} onClick={props.decValue}>-</button>
             <button disabled={props.disableBtn.disabledSetValue} onClick={props.reset}>reset</button>
