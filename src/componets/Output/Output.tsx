@@ -14,6 +14,7 @@ type OutputType = {
     }
     reset: () => void
     error:boolean
+    textError: string
 }
 
 export const Output = (props: OutputType) => {
@@ -21,7 +22,7 @@ export const Output = (props: OutputType) => {
     return (
         <div>
             {props.error ?
-                <span>set value pls</span>
+                <span>{props.textError}</span>
                 :<span>{props.currentValue}</span>
             }
             {/*<span>{props.currentValue}</span>*/}

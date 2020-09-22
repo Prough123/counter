@@ -27,6 +27,7 @@ function App() {
     const disabledSetValue = disableBtn.disabledSetValue
     const currentValue = state.currentValue
     const valueError = state.error
+    const textError = state.setErrorMessage
     const dispatch = useDispatch()
 
 
@@ -63,10 +64,11 @@ function App() {
     }
 
     const setValue = (minValue: number, maxValue: number) => {
-        dispatch(setValueAC(minValue, maxValue))
-        setMaxValue(0)
-        setMinValue(0)
-        dispatch(setErrorMessage(false))
+            dispatch(setDisableAC(true,false,false))
+            dispatch(setValueAC(minValue, maxValue))
+            setMaxValue(0)
+            setMinValue(0)
+            dispatch(setErrorMessage(false))
     }
 
     const increaseValue = () => {
@@ -74,7 +76,7 @@ function App() {
             dispatch(incValueAC())
         }
         if((state.maxValue - 1) === currentValue){
-            dispatch(setDisableAC(false,true,false))
+            dispatch(setDisableAC(true,true,false))
         }
     }
 
@@ -83,12 +85,13 @@ function App() {
             dispatch(decValueAC())
         }
         if((state.minValue) === currentValue){
-            dispatch(setDisableAC(false,false,true))
+            dispatch(setDisableAC(true,false,true))
         }
     }
 
     const resetValue = () => {
         dispatch(setValueAC(0, 0))
+
     }
 
     return (
@@ -96,7 +99,7 @@ function App() {
             <div className="wrapper">
                 <Setup disabledSetValue={disabledSetValue}onChangeSetValue={onChangeSetValue} onSetMaxValue={onSetMaxValue} onSetMinValue={onSetMinValue}
                        maxValue={maxValue} minValue={minValue} setValue={setValue}/>
-                <Output error={valueError}  reset={resetValue} disableBtn={disableBtn} minValue={minValue} maxValue={maxValue}
+                <Output textError={textError} error={valueError}  reset={resetValue} disableBtn={disableBtn} minValue={minValue} maxValue={maxValue}
                         currentValue={currentValue} incValue={increaseValue}
                         decValue={decreaseValue}/>
             </div>
